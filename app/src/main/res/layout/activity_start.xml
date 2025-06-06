@@ -65,7 +65,7 @@
     <!-- Adjust indicatorColor to contrast with your background. -->
 
     <TextView
-        android:id="@+id/tvLoadingMessage"
+        android:id="@+id/loadingTxt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Loading..."
@@ -78,6 +78,22 @@
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginTop="30dp"
         android:layout_marginBottom="32dp"/>
+
+    <TextView
+        android:id="@+id/tvLoadingMessage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text=""
+        android:textSize="14dp"
+        android:textAppearance="@style/TextAppearance.Material3.BodyMedium"
+        android:textColor="@color/black"
+        android:textAlignment="center"
+        app:layout_constraintTop_toBottomOf="@id/loadingTxt"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="30dp"
+        android:layout_marginBottom="32dp"/>
+
     <!-- Optional: A message below the spinner. Adjust textColor. -->
 
 </androidx.constraintlayout.widget.ConstraintLayout>

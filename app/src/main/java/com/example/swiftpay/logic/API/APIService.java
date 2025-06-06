@@ -1,71 +1,201 @@
 package com.example.swiftpay.logic.API;
 
 import android.os.StrictMode;
+import android.util.Log;
 
-import org.json.JSONArray;
+import org.json.JSONObject;
 
 import java.io.BufferedReader;
+import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.net.CookieManager;
+import java.net.HttpCookie;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
+import java.util.HashMap;
+import java.util.List;
 
 public class APIService {
 
-    private final static String BASE_URL = "BASE URL";
+    private static final String BASE_URL = "https://urls-mate-glass-consensus.trycloudflare.com";
+    private static final CookieManager cookieManager = new CookieManager();
 
-    private final static String usersEndpoint = "";
+    static {
+        java.net.CookieHandler.setDefault(cookieManager);
+    }
 
-    private final static String pingEndpoint = "";
-
-    public static JSONArray fetchUsersData() {
-        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
-        StrictMode.setThreadPolicy(policy);
-
+    public static boolean pingServer() {
         try {
-            URL url = new URL(BASE_URL + usersEndpoint);
+            URL url = new URL(BASE_URL + "/ping");
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-
             conn.setRequestMethod("GET");
-            conn.setRequestProperty("Accept", "application/json");
-
-            if (conn.getResponseCode() != 200) {
-                throw new RuntimeException("HTTP error code: " + conn.getResponseCode());
-            }
-
-            BufferedReader br = new BufferedReader(new InputStreamReader((conn.getInputStream())));
-            StringBuilder responseBuilder = new StringBuilder();
-            String output;
-
-            while ((output = br.readLine()) != null) {
-                responseBuilder.append(output);
-            }
-
+            conn.setConnectTimeout(5000);
+            int responseCode = conn.getResponseCode();
             conn.disconnect();
-            return new JSONArray(responseBuilder.toString());
-
+            return responseCode == 200;
         } catch (Exception e) {
-            e.printStackTrace();
+            return false;
+        }
+    }
+
+    public static boolean pingServerMultipleTimes(int tries) {
+        for (int i = 0; i < tries; i++) {
+            if (pingServer()) return true;
+            try {
+                Thread.sleep(3000);
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+                return false;
+            }
+        }
+        return false;
+    }
+
+    public static boolean checkLogin() {
+        try {
+            URL url = new URL(BASE_URL + "/check");
+            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+            conn.setRequestMethod("GET");
+            conn.setConnectTimeout(2000);
+            setCookies(conn);
+
+            BufferedReader reader = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+            StringBuilder response = new StringBuilder();
+            String line;
+            while ((line = reader.readLine()) != null) {
+                response.append(line);
+            }
+            reader.close();
+            conn.disconnect();
+
+            JSONObject json = new JSONObject(response.toString());
+            return json.optBoolean("status", false);
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
+    public static HashMap<String, Object> register(HashMap<String, String> data) {
+        return postRequest("/register", data);
+    }
+
+    public static HashMap<String, Object> login(HashMap<String, String> data) {
+        return postRequest("/login", data);
+    }
+
+    public static JSONObject fetchUser() {
+        try {
+            URL url = new URL(BASE_URL + "/user");
+            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+            conn.setRequestMethod("GET");
+            conn.setConnectTimeout(5000);
+            setCookies(conn);
+
+            BufferedReader reader = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+            StringBuilder response = new StringBuilder();
+            String line;
+            while ((line = reader.readLine()) != null) {
+                response.append(line);
+            }
+            reader.close();
+            conn.disconnect();
+
+            return new JSONObject(response.toString());
+        } catch (Exception e) {
             return null;
         }
     }
 
-    public static boolean pingApi(int maxTries) {
-        for (int i = 0; i < maxTries; i++) {
-            try {
-                URL url = new URL(BASE_URL + pingEndpoint);
-                HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-                conn.setRequestMethod("GET");
-                conn.setConnectTimeout(2000);
-                conn.connect();
+    private static HashMap<String, Object> postRequest(String endpoint, HashMap<String, String> data) {
+        HashMap<String, Object> result = new HashMap<>();
+        HttpURLConnection conn = null;
 
-                int responseCode = conn.getResponseCode();
-                if (responseCode >= 200 && responseCode < 300) return true;
+        try {
+            URL url = new URL(BASE_URL + endpoint);
+            conn = (HttpURLConnection) url.openConnection();
+            conn.setRequestMethod("POST");
+            conn.setDoOutput(true);
+            conn.setConnectTimeout(5000);
+            conn.setRequestProperty("Content-Type", "application/json");
+            conn.setRequestProperty("Accept", "application/json");
+            setCookies(conn);
 
-            } catch (Exception e) {
-                try { Thread.sleep(3000); } catch (InterruptedException ignored) {}
+            String jsonInputString = toJson(data);
+            try (OutputStream os = conn.getOutputStream()) {
+                byte[] input = jsonInputString.getBytes(StandardCharsets.UTF_8);
+                os.write(input, 0, input.length);
+            }
+
+            int responseCode = conn.getResponseCode();
+            InputStream inputStream;
+
+            if (responseCode >= 200 && responseCode < 300) {
+                inputStream = conn.getInputStream();
+            } else {
+                inputStream = conn.getErrorStream(); // read error details
+            }
+
+            BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream, StandardCharsets.UTF_8));
+            StringBuilder responseBody = new StringBuilder();
+            String line;
+            while ((line = reader.readLine()) != null) {
+                responseBody.append(line.trim());
+            }
+            reader.close();
+
+            saveCookies(conn);
+
+            JSONObject jsonResponse = new JSONObject(responseBody.toString());
+            String message = jsonResponse.optString("message", "No message");
+
+            result.put("code", responseCode);
+            result.put("message", message);
+            return result;
+
+        } catch (Exception e) {
+            result.put("code", 0);
+            result.put("message", "No response from server!");
+            Log.d("API_ERROR", Log.getStackTraceString(e));
+            return result;
+        } finally {
+            if (conn != null) conn.disconnect();
+        }
+    }
+
+    private static void setCookies(HttpURLConnection conn) {
+        List<HttpCookie> cookies = cookieManager.getCookieStore().getCookies();
+        if (!cookies.isEmpty()) {
+            StringBuilder cookieHeader = new StringBuilder();
+            for (HttpCookie cookie : cookies) {
+                cookieHeader.append(cookie.toString()).append("; ");
+            }
+            conn.setRequestProperty("Cookie", cookieHeader.toString());
+        }
+    }
+
+    private static void saveCookies(HttpURLConnection conn) {
+        for (int i = 1;; i++) {
+            String headerKey = conn.getHeaderFieldKey(i);
+            if (headerKey == null) break;
+            if (headerKey.equalsIgnoreCase("Set-Cookie")) {
+                List<HttpCookie> cookies = HttpCookie.parse(conn.getHeaderField(i));
+                for (HttpCookie cookie : cookies) {
+                    cookieManager.getCookieStore().add(null, cookie);
+                }
             }
         }
+    }
 
-        return false;
+    private static String toJson(HashMap<String, String> map) {
+        StringBuilder json = new StringBuilder("{");
+        int count = 0;
+        for (String key : map.keySet()) {
+            json.append("\"").append(key).append("\":\"").append(map.get(key)).append("\"");
+            if (++count < map.size()) json.append(",");
+        }
+        json.append("}");
+        return json.toString();
     }
 }

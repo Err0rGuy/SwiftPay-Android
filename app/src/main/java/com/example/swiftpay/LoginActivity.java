@@ -1,21 +1,27 @@
 package com.example.swiftpay; // Replace with your actual package name
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Patterns;
-import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.swiftpay.logic.API.APIService;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 
+import java.util.HashMap;
 import java.util.Objects;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -25,15 +31,12 @@ public class LoginActivity extends AppCompatActivity {
     private TextInputEditText edtLoginPassword;
     private Button btnLogin;
     private TextView tvGoToRegister;
-    // Optional: private TextView tvForgotPassword;
 
 
+    @SuppressLint("SetTextI18n")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        // This assumes you have set a NoActionBar theme in your styles.xml or AndroidManifest.xml
-        // If not, and you want to remove it programmatically for this activity:
-        // supportRequestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_login);
 
         // Initialize Views
@@ -43,37 +46,21 @@ public class LoginActivity extends AppCompatActivity {
         edtLoginPassword = findViewById(R.id.edtLoginPassword);
         btnLogin = findViewById(R.id.btnLogin);
         tvGoToRegister = findViewById(R.id.tvGoToRegister);
-        // tvForgotPassword = findViewById(R.id.tvForgotPassword); // Uncomment if you have it and want to use it
+        // tvForgotPassword = findViewById(R.id.tvForgotPassword);
 
         setupInputValidationListeners();
 
-        btnLogin.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (validateInputs()) {
-                    // --- TODO: Implement actual login logic here ---
-                    // For example, authenticate with Firebase, your own backend, etc.
-                    String email = Objects.requireNonNull(edtLoginEmail.getText()).toString().trim();
-                    String password = Objects.requireNonNull(edtLoginPassword.getText()).toString(); // No trim for password
-
-                    // Placeholder for successful login
-                    Toast.makeText(LoginActivity.this, "Login attempt for: " + email, Toast.LENGTH_SHORT).show();
-                    // Example: Navigate to a MainActivity after successful login
-                    // Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                    // startActivity(intent);
-                    // finish(); // Optional: finish LoginActivity so user can't go back to it
-                } else {
-                    Toast.makeText(LoginActivity.this, "Please correct the errors.", Toast.LENGTH_SHORT).show();
-                }
+        btnLogin.setOnClickListener(v -> {
+            if (validateInputs()) {
+                sendData();
+            } else {
+                Toast.makeText(LoginActivity.this, "Please correct the errors.", Toast.LENGTH_SHORT).show();
             }
         });
 
-        tvGoToRegister.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
-                startActivity(intent);
-            }
+        tvGoToRegister.setOnClickListener(v -> {
+            Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
+            startActivity(intent);
         });
 
         // Optional: Forgot Password Listener
@@ -87,9 +74,13 @@ public class LoginActivity extends AppCompatActivity {
         //     });
         // }
     }
+    private void navigateToDashboard() {
+        Intent intent = new Intent(LoginActivity.this, DashboardActivity.class);
+        startActivity(intent);
+        finish();
+    }
 
     private void setupInputValidationListeners() {
-        // Clear error when user starts typing in email field
         edtLoginEmail.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
@@ -103,7 +94,6 @@ public class LoginActivity extends AppCompatActivity {
             public void afterTextChanged(Editable s) {}
         });
 
-        // Clear error when user starts typing in password field
         edtLoginPassword.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
@@ -121,9 +111,8 @@ public class LoginActivity extends AppCompatActivity {
     private boolean validateInputs() {
         boolean isValid = true;
         String email = Objects.requireNonNull(edtLoginEmail.getText()).toString().trim();
-        String password = Objects.requireNonNull(edtLoginPassword.getText()).toString(); // No trim for password
+        String password = Objects.requireNonNull(edtLoginPassword.getText()).toString();
 
-        // Validate Email
         if (email.isEmpty()) {
             tilLoginEmail.setError("Email cannot be empty");
             isValid = false;
@@ -131,17 +120,47 @@ public class LoginActivity extends AppCompatActivity {
             tilLoginEmail.setError("Invalid email format");
             isValid = false;
         } else {
-            tilLoginEmail.setError(null); // Clear error
+            tilLoginEmail.setError(null);
         }
 
-        // Validate Password
         if (password.isEmpty()) {
             tilLoginPassword.setError("Password cannot be empty");
             isValid = false;
         } else {
-            tilLoginPassword.setError(null); // Clear error
+            tilLoginPassword.setError(null);
         }
 
         return isValid;
     }
+
+    private void sendData() {
+        HashMap<String, String> userData = new HashMap<>();
+        userData.put("email", Objects.requireNonNull(edtLoginEmail.getText()).toString().trim());
+        userData.put("password", Objects.requireNonNull(edtLoginPassword.getText()).toString().trim());
+
+        ExecutorService executor = Executors.newSingleThreadExecutor();
+        Handler handler = new Handler(Looper.getMainLooper());
+
+        executor.execute(() -> {
+            HashMap<String, Object> response = APIService.login(userData);
+
+            handler.post(() -> {
+                int code = (int) response.getOrDefault("code", 0);
+                String message = (String) response.getOrDefault("message", "Unknown error");
+
+                if (code == 200) {
+                    Toast.makeText(LoginActivity.this, "Login successful!", Toast.LENGTH_SHORT).show();
+                    navigateToDashboard();
+                } else {
+                    if (message.contains("server"))
+                        Toast.makeText(LoginActivity.this, message, Toast.LENGTH_SHORT).show();
+                    else {
+                    tilLoginEmail.setError(message);
+                    tilLoginPassword.setError(message);
+                    }
+                }
+            });
+        });
+    }
+
 }

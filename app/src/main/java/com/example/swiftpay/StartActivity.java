@@ -16,26 +16,21 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.swiftpay.logic.API.APIService;
 
-import org.json.JSONArray;
-
 public class StartActivity extends AppCompatActivity {
 
     private ProgressBar progressSpinnerStart;
     private TextView tvLoadingMessage;
-    public static JSONArray userData;
     private final Handler handler = new Handler();
-    private final int CHECK_INTERVAL = 3000; // milliseconds
-    private final int MAX_RETRIES = 3;
+    private final int CHECK_INTERVAL = 3000;
+    private final int MAX_RETRIES = 6;
     private int retryCount = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_start);
-
         progressSpinnerStart = findViewById(R.id.progressSpinnerStart);
         tvLoadingMessage = findViewById(R.id.tvLoadingMessage);
-
         checkInternetAndProceed();
     }
 
@@ -54,12 +49,11 @@ public class StartActivity extends AppCompatActivity {
 
     private void pingApiAndProceed() {
         new Thread(() -> {
-            boolean isAlive = APIService.pingApi(4);
-
+            boolean isAlive = APIService.pingServerMultipleTimes(MAX_RETRIES);
             runOnUiThread(() -> {
                 if (isAlive) {
                     noErrorAndRetry("Server is online. Redirecting...");
-                    fetchingData();
+                    checkIfLoggedIn();
                 } else {
                     retryCount++;
                     if (retryCount < MAX_RETRIES) {
@@ -90,9 +84,9 @@ public class StartActivity extends AppCompatActivity {
                         capabilities.hasTransport(NetworkCapabilities.TRANSPORT_ETHERNET));
     }
 
-    private void fetchingData(){
-        userData = APIService.fetchUsersData();
-        if (userData == null) navigateToLogin();
+    private void checkIfLoggedIn(){
+        boolean flag = APIService.checkLogin();
+        if (!flag) navigateToLogin();
         else navigateToDashboard();
     }
 
@@ -104,7 +98,6 @@ public class StartActivity extends AppCompatActivity {
 
     private void navigateToDashboard() {
         Intent intent = new Intent(StartActivity.this, DashboardActivity.class);
-        intent.putExtra("userData", (CharSequence) userData);
         startActivity(intent);
         finish();
     }
