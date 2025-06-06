@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Dark Theme Overrides - Adjust as needed -->
+    <color name="purple_200">#FFBB86FC</color> <!-- Often the same or lighter for dark theme accents -->
+    <color name="purple_500">#FF6200EE</color> <!-- Primary brand color, might be the same -->
+    <color name="purple_700">#FF3700B3</color> <!-- Darker variant, might be the same or adjusted -->
+
+    <color name="teal_200">#FF03DAC5</color>   <!-- Often the same or lighter for dark theme accents -->
+    <color name="teal_700">#FF018786</color>   <!-- Might be the same or adjusted -->
+
+    <!-- Black and White are usually fine as is, but you can override if needed -->
+     <color name="black">#FF000000</color>
+     <color name="white">#FFFFFFFF</color>
+    <color name="red">#A20000</color>
+</resources>
