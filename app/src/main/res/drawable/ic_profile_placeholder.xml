@@ -1,0 +1,26 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="96dp"
+    android:height="96dp"
+    android:viewportWidth="96"
+    android:viewportHeight="96">
+
+    <!-- Circular Background -->
+    <path
+        android:fillColor="#FF0067"
+        android:pathData="M48,48m-46,0a46,46 0,1 1,92 0a46,46 0,1 1,-92 0" />
+
+    <!-- Silhouette Head -->
+    <path
+        android:fillColor="#001071"
+        android:pathData="M48,30
+                      A14,14 0 1,0 48,58
+                      A14,14 0 1,0 48,30 Z" />
+
+    <!-- Silhouette Shoulders/Body (Simplified) -->
+    <path
+        android:fillColor="#001071"
+        android:pathData="M28,78
+                      C28,65 36,58 48,58
+                      C60,58 68,65 68,78
+                      L28,78 Z" />
+</vector>

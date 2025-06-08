@@ -21,7 +21,7 @@ public class StartActivity extends AppCompatActivity {
     private ProgressBar progressSpinnerStart;
     private TextView tvLoadingMessage;
     private final Handler handler = new Handler();
-    private final int CHECK_INTERVAL = 3000;
+    private final int CHECK_INTERVAL = 1500;
     private final int MAX_RETRIES = 6;
     private int retryCount = 0;
 
@@ -53,7 +53,7 @@ public class StartActivity extends AppCompatActivity {
             runOnUiThread(() -> {
                 if (isAlive) {
                     noErrorAndRetry("Server is online. Redirecting...");
-                    checkIfLoggedIn();
+                    navigateToLogin();
                 } else {
                     retryCount++;
                     if (retryCount < MAX_RETRIES) {

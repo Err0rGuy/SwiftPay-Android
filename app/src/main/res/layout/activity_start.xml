@@ -15,28 +15,27 @@
         android:layout_width="120dp"
         android:layout_height="120dp"
         android:src="@drawable/ic_bank_building"
-        app:tint="@color/purple_700"
         app:layout_constraintBottom_toTopOf="@+id/tvAppNameStart"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        android:layout_marginBottom="36dp"
         android:contentDescription="App Logo" />
+
+    <!-- Replace "SwiftPay" with your actual app name.
+         Adjust textColor to contrast with your background. -->
 
     <TextView
         android:id="@+id/tvAppNameStart"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="SwiftPay"
-        android:textSize="60dp"
         android:textAppearance="@style/TextAppearance.Material3.HeadlineLarge"
         android:textColor="@color/black"
+        android:textSize="60dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.45" />
-    <!-- Replace "SwiftPay" with your actual app name.
-         Adjust textColor to contrast with your background. -->
+        app:layout_constraintVertical_bias="0.423" />
 
     <TextView
         android:id="@+id/tvAppTaglineStart"
@@ -49,7 +48,7 @@
         app:layout_constraintTop_toBottomOf="@id/tvAppNameStart"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="20dp"/>
+        android:layout_marginTop="5dp"/>
     <!-- Optional: Add a tagline. Adjust textColor. -->
 
     <com.google.android.material.progressindicator.CircularProgressIndicator
@@ -76,7 +75,7 @@
         app:layout_constraintTop_toBottomOf="@id/progressSpinnerStart"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="10dp"
         android:layout_marginBottom="32dp"/>
 
     <TextView
@@ -91,7 +90,7 @@
         app:layout_constraintTop_toBottomOf="@id/loadingTxt"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="20dp"
         android:layout_marginBottom="32dp"/>
 
     <!-- Optional: A message below the spinner. Adjust textColor. -->

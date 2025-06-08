@@ -1,0 +1,16 @@
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- State when the EditText is focused -->
+    <item android:state_focused="true"
+        android:drawable="@drawable/edit_text_background_focused" />
+
+    <!-- Default, non-focused state (must be last) -->
+    <item android:drawable="@drawable/edit_text_background_default" />
+
+    <!-- You can add other states as needed, e.g., disabled, error -->
+    <!--
+    <item android:state_enabled="false"
+        android:drawable="@drawable/edit_text_background_disabled" />
+    <item android:state_hovered="true"
+        android:drawable="@drawable/edit_text_background_hovered" />
+    -->
+</selector>

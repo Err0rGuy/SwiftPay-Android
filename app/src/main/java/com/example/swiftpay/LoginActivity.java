@@ -7,8 +7,11 @@ import android.os.Handler;
 import android.os.Looper;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.util.Patterns;
+import android.view.View;
 import android.widget.Button;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -24,7 +27,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 public class LoginActivity extends AppCompatActivity {
-
+    private ProgressBar progressSpinnerStart;
     private TextInputLayout tilLoginEmail;
     private TextInputEditText edtLoginEmail;
     private TextInputLayout tilLoginPassword;
@@ -33,7 +36,7 @@ public class LoginActivity extends AppCompatActivity {
     private TextView tvGoToRegister;
 
 
-    @SuppressLint("SetTextI18n")
+    @SuppressLint({"SetTextI18n", "MissingInflatedId"})
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,6 +49,8 @@ public class LoginActivity extends AppCompatActivity {
         edtLoginPassword = findViewById(R.id.edtLoginPassword);
         btnLogin = findViewById(R.id.btnLogin);
         tvGoToRegister = findViewById(R.id.tvGoToRegister);
+        progressSpinnerStart = findViewById(R.id.progressSpinnerStart);
+        progressSpinnerStart.setVisibility(View.GONE);
         // tvForgotPassword = findViewById(R.id.tvForgotPassword);
 
         setupInputValidationListeners();
@@ -58,10 +63,7 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
-        tvGoToRegister.setOnClickListener(v -> {
-            Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
-            startActivity(intent);
-        });
+        tvGoToRegister.setOnClickListener(v -> navigateToSignup());
 
         // Optional: Forgot Password Listener
         // if (tvForgotPassword != null) {
@@ -73,6 +75,12 @@ public class LoginActivity extends AppCompatActivity {
         //         }
         //     });
         // }
+    }
+
+    private void navigateToSignup(){
+        Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
+        startActivity(intent);
+        finish();
     }
     private void navigateToDashboard() {
         Intent intent = new Intent(LoginActivity.this, DashboardActivity.class);
@@ -142,6 +150,7 @@ public class LoginActivity extends AppCompatActivity {
         Handler handler = new Handler(Looper.getMainLooper());
 
         executor.execute(() -> {
+            handler.post(() -> progressSpinnerStart.setVisibility(View.VISIBLE));
             HashMap<String, Object> response = APIService.login(userData);
 
             handler.post(() -> {
@@ -154,12 +163,15 @@ public class LoginActivity extends AppCompatActivity {
                 } else {
                     if (message.contains("server"))
                         Toast.makeText(LoginActivity.this, message, Toast.LENGTH_SHORT).show();
-                    else {
-                    tilLoginEmail.setError(message);
-                    tilLoginPassword.setError(message);
-                    }
+                    else if(message.contains("Email"))
+                        tilLoginEmail.setError(message);
+                    else if (message.contains("password"))
+                        tilLoginPassword.setError(message);
+                    else
+                        Toast.makeText(LoginActivity.this, message, Toast.LENGTH_SHORT).show();
                 }
             });
+            handler.post(() -> progressSpinnerStart.setVisibility(View.GONE));
         });
     }
 

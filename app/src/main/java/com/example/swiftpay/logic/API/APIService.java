@@ -1,6 +1,5 @@
 package com.example.swiftpay.logic.API;
 
-import android.os.StrictMode;
 import android.util.Log;
 
 import org.json.JSONObject;
@@ -14,12 +13,12 @@ import java.net.HttpCookie;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
 public class APIService {
-
-    private static final String BASE_URL = "https://urls-mate-glass-consensus.trycloudflare.com";
+    private static final String BASE_URL = "https://competent-thailand-templates-penalty.trycloudflare.com";
     private static final CookieManager cookieManager = new CookieManager();
 
     static {
@@ -85,9 +84,9 @@ public class APIService {
         return postRequest("/login", data);
     }
 
-    public static JSONObject fetchUser() {
+    public static JSONObject fetchData() {
         try {
-            URL url = new URL(BASE_URL + "/user");
+            URL url = new URL(BASE_URL + "/detail");
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             conn.setRequestMethod("GET");
             conn.setConnectTimeout(5000);
@@ -104,6 +103,7 @@ public class APIService {
 
             return new JSONObject(response.toString());
         } catch (Exception e) {
+            Log.d("Exception happened ---> ", Arrays.toString(e.getStackTrace()));
             return null;
         }
     }
@@ -134,7 +134,7 @@ public class APIService {
             if (responseCode >= 200 && responseCode < 300) {
                 inputStream = conn.getInputStream();
             } else {
-                inputStream = conn.getErrorStream(); // read error details
+                inputStream = conn.getErrorStream();
             }
 
             BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream, StandardCharsets.UTF_8));

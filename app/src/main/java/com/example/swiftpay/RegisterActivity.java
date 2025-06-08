@@ -41,6 +41,7 @@ public class RegisterActivity extends AppCompatActivity {
     private TextInputEditText edtConfirmPassword;
     private ProgressBar pbPasswordStrength;
     private TextView tvPasswordStrength;
+    private ProgressBar progressSpinnerStart;
 
     private TextView tvGoToLogin;
     private Button btnSignUp;
@@ -67,7 +68,8 @@ public class RegisterActivity extends AppCompatActivity {
         btnSignUp = findViewById(R.id.btnSignUp);
         tvLoginPrompt = findViewById(R.id.tvLoginPrompt);
         tvGoToLogin = findViewById(R.id.tvGoToLogin);
-
+        progressSpinnerStart = findViewById(R.id.progressSpinnerStart);
+        progressSpinnerStart.setVisibility(View.GONE);
         setupInputValidation();
         setupPasswordStrengthChecker();
 
@@ -83,6 +85,7 @@ public class RegisterActivity extends AppCompatActivity {
     private void navigateToLogin() {
         Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
         startActivity(intent);
+        finish();
     }
 
     private void setupInputValidation() {
@@ -264,7 +267,7 @@ public class RegisterActivity extends AppCompatActivity {
         if (!validateConfirmPassword())
             isValid = false;
 
-         if (pbPasswordStrength.getProgress() < 80 && !password.isEmpty()) { // Example: require at least "Medium"
+         if (pbPasswordStrength.getProgress() < 80 && !password.isEmpty()) { 
              tilPassword.setError("Password strength is not acceptable");
              isValid = false;
          }
@@ -301,8 +304,8 @@ public class RegisterActivity extends AppCompatActivity {
         Handler handler = new Handler(Looper.getMainLooper());
 
         executor.execute(() -> {
+            handler.post(() -> progressSpinnerStart.setVisibility(View.VISIBLE));
             HashMap<String, Object> response = APIService.register(userData);
-
             handler.post(() -> {
                 int code = (int) response.getOrDefault("code", 0);
                 String message = (String) response.getOrDefault("message", "Unknown error");
@@ -323,10 +326,11 @@ public class RegisterActivity extends AppCompatActivity {
                         tilFirstName.setError(message);
                     else if (message.contains("password_confirmation"))
                         tilFirstName.setError(message);
-
-
+                    else
+                        Toast.makeText(RegisterActivity.this, message, Toast.LENGTH_SHORT).show();
                 }
             });
+            handler.post(() -> progressSpinnerStart.setVisibility(View.GONE));
         });
     }
 

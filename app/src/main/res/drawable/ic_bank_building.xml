@@ -1,29 +1,100 @@
 <vector xmlns:android="http://schemas.android.com/apk/res/android"
-    android:width="24dp"
-    android:height="24dp"
-    android:viewportWidth="24"
-    android:viewportHeight="24"
-    android:tint="?attr/colorControlNormal">  <!-- You can change tint or remove it -->
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
 
-    <!-- Roof Triangle -->
+    <!-- Base Platform -->
     <path
-        android:fillColor="@android:color/white"
-        android:pathData="M12,3 L2,10 L22,10 Z"/>
+        android:fillColor="#100A59"
+        android:pathData="M10,90 H98 V96 H10 Z" />
+    <path
+        android:fillColor="#100A59"
+        android:pathData="M12,88 H96 V90 H12 Z" />
 
-    <!-- Building Body -->
+    <!-- Main Building Structure -->
     <path
-        android:fillColor="@android:color/white"
-        android:pathData="M4,10 L4,21 L20,21 L20,10 Z"/>
+        android:fillColor="#2F20B8"
+        android:pathData="M18,30 H90 V88 H18 Z" />
 
-    <!-- Pillars (simplified) -->
+    <!-- Roof Pediment -->
     <path
-        android:fillColor="@android:color/white"
-        android:pathData="M6,11 L6,19 M10,11 L10,19 M14,11 L14,19 M18,11 L18,19"/>
+        android:fillColor="#100A59"
+        android:pathData="M16,30 L54,15 L92,30 Z" />
+    <path
+        android:fillColor="#001CB3"
+        android:pathData="M19,31 L54,18 L89,31 Z" /> <!-- Inner pediment highlight -->
 
-    <!-- Base Line -->
+    <!-- Columns (Simplified - for more detail, each could be multiple paths) -->
+    <!-- Column 1 -->
     <path
-        android:strokeColor="@android:color/white"
+        android:fillColor="#003656"
+        android:pathData="M25,32 V86 H31 V32 Z" />
+    <path android:fillColor="#FFA200" android:pathData="M25,30 h6 v2 h-6 Z" /> <!-- Capital -->
+    <path android:fillColor="#FFA200" android:pathData="M25,86 h6 v2 h-6 Z" /> <!-- Base -->
+
+    <!-- Column 2 -->
+    <path
+        android:fillColor="#003656"
+        android:pathData="M40,32 V86 H46 V32 Z" />
+    <path android:fillColor="#FFA200" android:pathData="M40,30 h6 v2 h-6 Z" />
+    <path android:fillColor="#FFA200" android:pathData="M40,86 h6 v2 h-6 Z" />
+
+    <!-- Column 3 (Behind entrance, slightly different) -->
+    <!-- No direct column here, implied by entrance -->
+
+    <!-- Column 4 -->
+    <path
+        android:fillColor="#003656"
+        android:pathData="M62,32 V86 H68 V32 Z" />
+    <path android:fillColor="#FFA200" android:pathData="M62,30 h6 v2 h-6 Z" />
+    <path android:fillColor="#FFA200" android:pathData="M62,86 h6 v2 h-6 Z" />
+
+    <!-- Column 5 -->
+    <path
+        android:fillColor="#003656"
+        android:pathData="M77,32 V86 H83 V32 Z" />
+    <path android:fillColor="#FFA200" android:pathData="M77,30 h6 v2 h-6 Z" />
+    <path android:fillColor="#FFA200" android:pathData="M77,86 h6 v2 h-6 Z" />
+
+
+    <!-- Entrance -->
+    <path
+        android:fillColor="#FFA200"
+        android:pathData="M47,50 H61 V86 H47 Z" /> <!-- Doorway shadow -->
+    <path
+        android:fillColor="#0063FF"
+        android:pathData="M49,52 H59 V84 H49 Z" /> <!-- Inner door -->
+    <path
+        android:fillColor="#FFB100"
+        android:pathData="M46,48 h16 v2 h-16 Z" /> <!-- Lintel -->
+
+
+    <!-- Window Details (example for one window, repeat/modify for more) -->
+    <path
+        android:fillColor="#040104"
+        android:pathData="M33,55 h5 v10 h-5 Z" />
+    <path
+        android:fillColor="#040104"
+        android:pathData="M70,55 h5 v10 h-5 Z" />
+
+
+    <!-- Optional: Subtle details like lines on columns or roof texture -->
+    <path
+        android:strokeColor="#001EFF"
+        android:strokeWidth="0.5"
+        android:pathData="M28,32 V86 M43,32 V86 M65,32 V86 M80,32 V86" /> <!-- Column lines -->
+
+    <!-- Optional: A simple "dollar" or "currency" symbol on the pediment -->
+    <path
+        android:fillColor="#000000"
+        android:pathData="M54,22
+                       A3,3 0 1,0 54,28
+                       A3,3 0 1,0 54,22
+                       M53,20 V30 M55,20 V30
+                       M51,23 H57 M51,27 H57"
         android:strokeWidth="0.8"
-        android:pathData="M2,21 L22,21"/>
+        android:strokeColor="#BDAA00" />
+
 
 </vector>

@@ -1,0 +1,35 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="24dp"
+    android:height="24dp"
+    android:viewportWidth="24.0"
+    android:viewportHeight="24.0">
+
+    <path
+        android:fillColor="#08E752"
+        android:pathData="M3,11h12v2H3z"/>
+    <path
+        android:fillColor="#FF0000"
+        android:pathData="M5,8h8v2H5z"/>
+    <path
+        android:fillColor="#047A04"
+        android:pathData="M4,14h10v2H4z"/>
+
+    <path
+        android:strokeColor="#00FFFF"
+        android:strokeWidth="1.5"
+        android:pathData="M9,18A6,6 0 1,1 9,6A6,6 0 0,1 9,18Z"/>
+
+
+    <!-- Sending Arrow -->
+    <path
+        android:fillColor="#22849D"
+        android:pathData="M14,5l-1.41,1.41L15.17,9H3v2h12.17l-2.58,2.59L14,15l5,-5z"/>
+    <!-- A slightly bolder arrow head for more presence -->
+    <path
+        android:fillColor="#00B150"
+        android:pathData="M19,10 l-5,-5 v3 H3 v4 h11 v3 z"
+        android:strokeColor="#1B0059"
+        android:strokeWidth="0.5"/>
+
+
+</vector>

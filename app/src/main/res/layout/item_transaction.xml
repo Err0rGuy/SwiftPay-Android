@@ -1,0 +1,88 @@
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="16dp"
+    android:layout_marginEnd="16dp"
+    android:layout_marginTop="8dp"
+    android:layout_marginBottom="8dp"
+    app:cardElevation="4dp"
+    app:cardCornerRadius="12dp">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="16dp">
+
+        <!-- Status Icon (Success/Fail) -->
+        <ImageView
+            android:id="@+id/ivTransactionStatus"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            tools:src="@drawable/ic_status_success"
+            android:contentDescription="Transaction Status"/>
+
+        <!-- Transaction Description -->
+        <TextView
+            android:id="@+id/tvTransactionDescription"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:textAppearance="?attr/textAppearanceTitleMedium"
+            android:textColor="?attr/colorOnSurface"
+            app:layout_constraintStart_toEndOf="@id/ivTransactionStatus"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/tvTransactionAmount"
+            android:maxLines="1"
+            android:ellipsize="end"
+            tools:text="Payment to The Grand Galactic Supermarket" />
+
+        <!-- Destination Account -->
+        <TextView
+            android:id="@+id/tvDestinationAccount"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:textAppearance="?attr/textAppearanceBodyMedium"
+            android:textColor="?attr/colorOnSurfaceVariant"
+            app:layout_constraintStart_toStartOf="@id/tvTransactionDescription"
+            app:layout_constraintTop_toBottomOf="@id/tvTransactionDescription"
+            app:layout_constraintEnd_toEndOf="@id/tvTransactionDescription"
+            android:maxLines="1"
+            android:ellipsize="end"
+            tools:text="To: **** **** 1234 (Savings)" />
+
+        <!-- Transaction Amount -->
+        <TextView
+            android:id="@+id/tvTransactionAmount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?attr/textAppearanceTitleMedium"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/tvTransactionDescription"
+            app:layout_constraintBottom_toBottomOf="@id/tvDestinationAccount"
+            tools:text="-$25.99"
+            tools:textColor="@android:color/holo_red_dark"/> <!-- Example for outgoing -->
+
+        <!-- Optional: Transaction Date/Time (if available from API) -->
+        <TextView
+            android:id="@+id/tvTransactionDate"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:textAppearance="?attr/textAppearanceCaption"
+            android:textColor="?attr/colorOnSurfaceVariant"
+            app:layout_constraintStart_toStartOf="@id/tvDestinationAccount"
+            app:layout_constraintTop_toBottomOf="@id/tvDestinationAccount"
+            app:layout_constraintEnd_toEndOf="@id/tvTransactionAmount"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:gravity="end"
+            tools:text="Oct 26, 2023, 10:35 AM" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</com.google.android.material.card.MaterialCardView>

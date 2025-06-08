@@ -1,0 +1,27 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="24dp"
+    android:height="24dp"
+    android:viewportWidth="24.0"
+    android:viewportHeight="24.0">
+
+    <!-- Clock face outline -->
+    <path
+        android:fillColor="@android:color/transparent"
+        android:strokeColor="#FFFFFF"
+        android:strokeWidth="1.5"
+        android:pathData="M12,2 A10,10 0 1,0 12,22 A10,10 0 1,0 12,2Z"/>
+
+    <!-- Clock hands -->
+    <path
+        android:fillColor="#FF3C3C"
+        android:pathData="M12.5,7 L12.5,12.5 L16,14.5 L15.3,15.7 L11,13.2 L11,7 Z"/>
+
+    <!-- Optional: Document/List lines inside or beside the clock -->
+    <!-- This is a simple representation, you could make it more detailed -->
+    <!-- Lines slightly offset to suggest a document behind the clock -->
+    <path
+        android:strokeColor="#00FF79"
+        android:strokeWidth="1"
+        android:pathData="M6,6 L10,6 M6,9 L12,9 M6,12 L10,12 M6,15 L12,15"/>
+
+</vector>
