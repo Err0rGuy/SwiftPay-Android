@@ -35,7 +35,7 @@ public class DashboardActivity extends AppCompatActivity {
     private ImageView ivUserProfile;
     private MaterialCardView cardNewTransaction;
     private MaterialCardView cardTransactionHistory;
-    private Button btnSettings;
+    private Button btnLogout;
 
     @SuppressLint("MissingInflatedId")
     @Override
@@ -56,7 +56,7 @@ public class DashboardActivity extends AppCompatActivity {
         ivUserProfile = findViewById(R.id.ivUserProfile);
         cardNewTransaction = findViewById(R.id.cardNewTransaction);
         cardTransactionHistory = findViewById(R.id.cardTransactionHistory);
-        btnSettings = findViewById(R.id.btnSettings);
+        btnLogout = findViewById(R.id.btnLogout);
         tvUserEmail = findViewById(R.id.tvUserEmail);
 
         loadUserData();
@@ -73,17 +73,27 @@ public class DashboardActivity extends AppCompatActivity {
             Toast.makeText(DashboardActivity.this, "Opening Transaction History...", Toast.LENGTH_SHORT).show();
         });
 
-        btnSettings.setOnClickListener(v -> {
-            Intent intent = new Intent(DashboardActivity.this, SettingsActivity.class);
-            startActivity(intent);
-            Toast.makeText(DashboardActivity.this, "Opening Settings...", Toast.LENGTH_SHORT).show();
+        btnLogout.setOnClickListener(v -> {
+            Toast.makeText(DashboardActivity.this, "Logging out...", Toast.LENGTH_LONG).show();
+            logout();
         });
 
-        ivUserProfile.setOnClickListener(v -> {
-            Toast.makeText(DashboardActivity.this, "So what?", Toast.LENGTH_SHORT).show();
-        });
+        ivUserProfile.setOnClickListener(v -> Toast.makeText(DashboardActivity.this, "So what?", Toast.LENGTH_SHORT).show());
     }
 
+    private void logout(){
+        var executor = Executors.newSingleThreadExecutor();
+        executor.execute(() -> {
+            var loggedOut = APIService.logout();
+            if (loggedOut) {
+                new Handler(Looper.getMainLooper()).post(() -> {
+                    Intent intent = new Intent(this, LoginActivity.class);
+                    startActivity(intent);
+                    finish();
+                });
+            }
+        });
+    }
     @SuppressLint("SetTextI18n")
     private void loadUserData() {
 
@@ -111,7 +121,7 @@ public class DashboardActivity extends AppCompatActivity {
                     }
                     tvUserName.setText(fullName);
                     tvUserEmail.setText(userEmail);
-                    tvCurrentMoneyValue.setText(balance);
+                    tvCurrentMoneyValue.setText("$" + balance);
                     tvAccountNumber.setText(accountNumber);
                     tvAccountType.setText("Saving Account");
                 });

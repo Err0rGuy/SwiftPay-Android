@@ -10,14 +10,14 @@ public class Transaction {
     private String referenceNumber;
     private String status;
     private String date;
-    public Transaction(JSONObject jsonObject) throws JSONException {
-        this.description = jsonObject.optString("description", "N/A");
-        this.amount = jsonObject.optString("amount", "0.00");
-        this.destinationAccount = jsonObject.optString("destinationAccount", "Unknown Account");
-        this.status = jsonObject.optString("status", "fail").toLowerCase();
-        this.date = jsonObject.optString("date", "");
+    private boolean success;
+    public Transaction(String description, String destination, String amount, String date, boolean success) {
+        this.description = description;
+        this.destinationAccount = destination;
+        this.amount = amount;
+        this.date = date;
+        this.success = success;
     }
-
     public String getAmount() {
         return amount;
     }
@@ -30,8 +30,8 @@ public class Transaction {
         return description;
     }
 
-    public String getStatus() {
-        return status;
+    public boolean getStatus() {
+        return success;
     }
 
     public String getDate() {

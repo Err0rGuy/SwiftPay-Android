@@ -5,6 +5,7 @@ import android.util.Log;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
@@ -18,7 +19,7 @@ import java.util.HashMap;
 import java.util.List;
 
 public class APIService {
-    private static final String BASE_URL = "https://competent-thailand-templates-penalty.trycloudflare.com";
+    private static final String BASE_URL = "https://hardware-words-lisa-cause.trycloudflare.com";
     private static final CookieManager cookieManager = new CookieManager();
 
     static {
@@ -84,9 +85,40 @@ public class APIService {
         return postRequest("/login", data);
     }
 
-    public static JSONObject fetchData() {
+    public static HashMap<String,Object>transaction(HashMap<String, String>data){
+        return postRequest("/transaction/transfer", data);
+    }
+
+    public static boolean logout(){
         try {
-            URL url = new URL(BASE_URL + "/detail");
+            URL url = new URL(BASE_URL + "/logout");
+            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+            conn.setRequestMethod("POST");
+            conn.setConnectTimeout(2000);
+            conn.setDoOutput(true);
+            conn.setRequestProperty("Content-Type", "application/json");
+            conn.setRequestProperty("Accept", "application/json");
+            setCookies(conn);
+            return conn.getResponseCode() == 200;
+        } catch (IOException e) {
+            Log.d("Exception happened -->", String.valueOf(e.getStackTrace()));
+            throw new RuntimeException(e);
+        }
+    }
+
+
+
+    public static JSONObject fetchData() {
+        return getRequest("/detail");
+    }
+
+    public static JSONObject fetchTransaction(){
+        return getRequest("/transaction");
+    }
+
+    private static JSONObject getRequest(String endpoint){
+        try {
+            URL url = new URL(BASE_URL + endpoint);
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             conn.setRequestMethod("GET");
             conn.setConnectTimeout(5000);
@@ -106,8 +138,8 @@ public class APIService {
             Log.d("Exception happened ---> ", Arrays.toString(e.getStackTrace()));
             return null;
         }
-    }
 
+    }
     private static HashMap<String, Object> postRequest(String endpoint, HashMap<String, String> data) {
         HashMap<String, Object> result = new HashMap<>();
         HttpURLConnection conn = null;
