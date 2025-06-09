@@ -7,48 +7,48 @@
     android:background="?android:attr/colorBackground"
     tools:context=".DashboardActivity">
 
-    <!-- Top Bar for Current Money -->
+
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/cardCurrentMoney"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
+        android:layout_width="364dp"
+        android:layout_height="86dp"
         android:layout_marginTop="10dp"
         android:layout_marginEnd="8dp"
-        app:cardElevation="4dp"
         app:cardCornerRadius="8dp"
-        app:layout_constraintTop_toTopOf="parent"
+        app:cardElevation="4dp"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/panelUserInfo">
+        app:layout_constraintTop_toTopOf="parent">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/tilCurrentMoney"
-            android:background="@drawable/gradient_background3"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
+            android:background="@drawable/gradient_background3"
             android:padding="16dp">
 
             <TextView
-                android:textStyle="bold"
                 android:id="@+id/tvCurrentMoneyLabel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Current Balance"
                 android:textAppearance="?attr/textAppearanceCaption"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintStart_toStartOf="parent"/>
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
                 android:id="@+id/tvCurrentMoneyValue"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
                 android:text="Loading..."
                 android:textAppearance="?attr/textAppearanceHeadline5"
                 android:textColor="#5D0085"
-                android:layout_marginTop="4dp"
-                app:layout_constraintTop_toBottomOf="@id/tvCurrentMoneyLabel"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                 />
+                app:layout_constraintTop_toBottomOf="@id/tvCurrentMoneyLabel" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </com.google.android.material.card.MaterialCardView>
@@ -56,17 +56,19 @@
     <!-- Right Panel for User and Account Info -->
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/panelUserInfo"
-        android:layout_width="152dp"
-        android:layout_height="395dp"
-        android:layout_marginTop="10dp"
+        android:layout_width="156dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="17dp"
         android:layout_marginEnd="16dp"
+        android:layout_marginBottom="17dp"
         app:cardCornerRadius="8dp"
         app:cardElevation="4dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toBottomOf="@+id/cardCurrentMoney">
 
         <LinearLayout
-            android:layout_width="151dp"
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@drawable/ic_gradient_background5"
             android:gravity="center_horizontal"
@@ -223,37 +225,41 @@
 
                 <ImageView
                     android:id="@+id/iconNewTransaction"
-                    android:layout_width="48dp"
-                    android:layout_height="48dp"
+                    android:layout_width="149dp"
+                    android:layout_height="102dp"
+                    android:contentDescription="New Transaction Icon"
                     android:src="@drawable/ic_send_money"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.714"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    android:contentDescription="New Transaction Icon"/>
+                    app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
                     android:id="@+id/tvNewTransactionLabel"
-                    android:layout_width="150dp"
-                    android:layout_height="47dp"
-                    android:layout_marginStart="16dp"
+                    android:layout_width="184dp"
+                    android:layout_height="56dp"
+                    android:layout_marginTop="28dp"
                     android:text="Make a New Transaction"
+                    android:textAlignment="center"
                     android:textAppearance="?attr/textAppearanceHeadline6"
                     android:textColor="@color/white"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toEndOf="@id/iconNewTransaction"
-                    app:layout_constraintTop_toTopOf="@id/iconNewTransaction" />
+                    app:layout_constraintHorizontal_bias="0.52"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/iconNewTransaction" />
 
                 <TextView
                     android:id="@+id/tvNewTransactionDescription"
                     android:layout_width="0dp"
-                    android:textColor="@color/white"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
                     android:text="Send money, pay bills, or transfer funds."
                     android:textAppearance="?attr/textAppearanceBody2"
-                    android:layout_marginTop="4dp"
+                    android:textColor="@color/white"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.0"
                     app:layout_constraintStart_toStartOf="@id/tvNewTransactionLabel"
-                    app:layout_constraintTop_toBottomOf="@id/tvNewTransactionLabel"
-                    app:layout_constraintEnd_toEndOf="parent"/>
+                    app:layout_constraintTop_toBottomOf="@id/tvNewTransactionLabel" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -280,39 +286,40 @@
 
                 <ImageView
                     android:id="@+id/iconTransactionHistory"
-                    android:layout_width="48dp"
-                    android:layout_height="48dp"
+                    android:layout_width="88dp"
+                    android:layout_height="76dp"
                     android:contentDescription="Transaction History Icon"
                     android:src="@drawable/ic_history"
-                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintVertical_bias="0.502" />
+                    app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
                     android:id="@+id/tvTransactionHistoryLabel"
-                    android:layout_width="152dp"
-                    android:layout_height="74dp"
-                    android:layout_marginStart="16dp"
+                    android:layout_width="196dp"
+                    android:layout_height="60dp"
+                    android:layout_marginTop="24dp"
                     android:text="View Transaction History"
+                    android:textAlignment="center"
                     android:textAppearance="?attr/textAppearanceHeadline6"
                     android:textColor="@color/white"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.481"
-                    app:layout_constraintStart_toEndOf="@id/iconTransactionHistory"
-                    app:layout_constraintTop_toTopOf="@id/iconTransactionHistory" />
+                    app:layout_constraintHorizontal_bias="1.0"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/iconTransactionHistory" />
 
                 <TextView
                     android:id="@+id/tvTransactionHistoryDescription"
                     android:layout_width="0dp"
-                    android:textColor="@color/white"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="24dp"
                     android:text="Review your past payments and transfers."
                     android:textAppearance="?attr/textAppearanceBody2"
-                    android:layout_marginTop="4dp"
+                    android:textColor="@color/white"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.0"
                     app:layout_constraintStart_toStartOf="@id/tvTransactionHistoryLabel"
-                    app:layout_constraintTop_toBottomOf="@id/tvTransactionHistoryLabel"
-                    app:layout_constraintEnd_toEndOf="parent"/>
+                    app:layout_constraintTop_toBottomOf="@id/tvTransactionHistoryLabel" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -324,3 +331,5 @@
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
+
+
