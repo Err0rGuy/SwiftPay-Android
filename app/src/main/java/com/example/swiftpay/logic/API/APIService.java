@@ -19,7 +19,7 @@ import java.util.HashMap;
 import java.util.List;
 
 public class APIService {
-    private static final String BASE_URL = "https://hardware-words-lisa-cause.trycloudflare.com";
+    private static final String BASE_URL = "https://proud-existence-pressure-devoted.trycloudflare.com";
     private static final CookieManager cookieManager = new CookieManager();
 
     static {
@@ -31,7 +31,7 @@ public class APIService {
             URL url = new URL(BASE_URL + "/ping");
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             conn.setRequestMethod("GET");
-            conn.setConnectTimeout(5000);
+            conn.setConnectTimeout(2000);
             int responseCode = conn.getResponseCode();
             conn.disconnect();
             return responseCode == 200;
@@ -44,7 +44,7 @@ public class APIService {
         for (int i = 0; i < tries; i++) {
             if (pingServer()) return true;
             try {
-                Thread.sleep(3000);
+                Thread.sleep(2000);
             } catch (InterruptedException e) {
                 Thread.currentThread().interrupt();
                 return false;

@@ -16,6 +16,8 @@
     <color name="custom1">#0020E6</color>
     <color name="custom2">#00F880</color>
     <color name="custom3">#FF0037</color>
+    <color name="whiteAlpha70">#B3FFFFFF</color> <!-- 70% alpha white -->
+    <color name="whiteAlpha40">#66FFFFFF</color>
     <color name="transaction_amount_positive">#4CAF50</color> <!-- Green -->
     <color name="transaction_amount_negative">#F44336</color> <!-- Red -->
     <color name="transaction_amount_failed">#757575</color>   <!-- Grey -->

@@ -17,13 +17,6 @@
         android:background="@drawable/gradient_background6"
         android:padding="16dp">
 
-        <!-- Status Icon (Success/Fail) -->
-
-        <!-- Transaction Description -->
-
-        <!-- Destination Account -->
-
-        <!-- Transaction Amount -->
 
         <ImageView
             android:id="@+id/ivTransactionStatus"
@@ -70,9 +63,6 @@
             app:layout_constraintStart_toStartOf="parent"
             tools:text="To: **** **** 1234 (Savings)" />
 
-        <!-- Example for outgoing -->
-
-        <!-- Optional: Transaction Date/Time (if available from API) -->
 
         <TextView
             android:id="@+id/tvTransactionAmount"

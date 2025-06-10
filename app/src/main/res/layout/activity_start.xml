@@ -7,8 +7,6 @@
     android:layout_height="match_parent"
     android:background="@drawable/gradient_backgound"
     tools:context=".StartActivity">
-    <!-- You can replace @drawable/gradient_background with a solid color (#YourColor)
-         or a custom image background (android:background="@drawable/your_image_bg") -->
 
     <ImageView
         android:id="@+id/ivAppLogoStart"
@@ -20,8 +18,6 @@
         app:layout_constraintStart_toStartOf="parent"
         android:contentDescription="App Logo" />
 
-    <!-- Replace "SwiftPay" with your actual app name.
-         Adjust textColor to contrast with your background. -->
 
     <TextView
         android:id="@+id/tvAppNameStart"
@@ -49,7 +45,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginTop="5dp"/>
-    <!-- Optional: Add a tagline. Adjust textColor. -->
 
     <com.google.android.material.progressindicator.CircularProgressIndicator
         android:id="@+id/progressSpinnerStart"
@@ -61,7 +56,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tvAppTaglineStart" />
-    <!-- Adjust indicatorColor to contrast with your background. -->
 
     <TextView
         android:id="@+id/loadingTxt"
@@ -93,6 +87,5 @@
         android:layout_marginTop="20dp"
         android:layout_marginBottom="32dp"/>
 
-    <!-- Optional: A message below the spinner. Adjust textColor. -->
 
 </androidx.constraintlayout.widget.ConstraintLayout>

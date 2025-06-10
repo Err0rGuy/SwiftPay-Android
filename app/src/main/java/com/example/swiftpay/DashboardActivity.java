@@ -32,9 +32,11 @@ public class DashboardActivity extends AppCompatActivity {
     private TextView tvUserEmail;
     private TextView tvAccountNumber;
     private TextView tvAccountType;
+    private TextView tvLastTransaction;
     private ImageView ivUserProfile;
     private MaterialCardView cardNewTransaction;
     private MaterialCardView cardTransactionHistory;
+    private MaterialCardView cardCurrencyMoney;
     private Button btnLogout;
 
     @SuppressLint("MissingInflatedId")
@@ -58,6 +60,8 @@ public class DashboardActivity extends AppCompatActivity {
         cardTransactionHistory = findViewById(R.id.cardTransactionHistory);
         btnLogout = findViewById(R.id.btnLogout);
         tvUserEmail = findViewById(R.id.tvUserEmail);
+        cardCurrencyMoney = findViewById(R.id.cardCurrentMoney);
+        tvLastTransaction = findViewById(R.id.tvLastTransaction);
 
         loadUserData();
 
@@ -76,6 +80,13 @@ public class DashboardActivity extends AppCompatActivity {
         btnLogout.setOnClickListener(v -> {
             Toast.makeText(DashboardActivity.this, "Logging out...", Toast.LENGTH_LONG).show();
             logout();
+        });
+
+        cardCurrencyMoney.setOnClickListener(v -> {
+            if (Double.parseDouble(tvCurrentMoneyValue.getText().toString().replace("$", "").trim()) > 50_000)
+                Toast.makeText(DashboardActivity.this, "Rich Guy", Toast.LENGTH_LONG).show();
+            else
+                Toast.makeText(DashboardActivity.this, "Poor Guy", Toast.LENGTH_LONG).show();
         });
 
         ivUserProfile.setOnClickListener(v -> Toast.makeText(DashboardActivity.this, "So what?", Toast.LENGTH_SHORT).show());
@@ -107,6 +118,7 @@ public class DashboardActivity extends AppCompatActivity {
                     String userEmail;
                     String balance;
                     String accountNumber;
+                    String lastTransaction;
                     Log.d("Detaillllllllllllllllllllllllllll --> ", String.valueOf(userData));
                     try {
                         JSONObject user = userData.getJSONObject("user");
@@ -115,6 +127,7 @@ public class DashboardActivity extends AppCompatActivity {
                         userEmail = user.getString("email");
                         balance = account.getString("balance");
                         accountNumber = account.getString("account_number");
+                        lastTransaction = account.getString("last_transaction_at");
                     } catch (JSONException e) {
                         Log.d("Exception happened --> ", Arrays.toString(e.getStackTrace()));
                         throw new RuntimeException(e);
@@ -124,6 +137,10 @@ public class DashboardActivity extends AppCompatActivity {
                     tvCurrentMoneyValue.setText("$" + balance);
                     tvAccountNumber.setText(accountNumber);
                     tvAccountType.setText("Saving Account");
+                    if (lastTransaction.equals("null"))
+                        tvLastTransaction.setText("no transaction yet.");
+                    else
+                        tvLastTransaction.setText(lastTransaction);
                 });
             }
 

@@ -22,8 +22,6 @@
             android:layout_height="?attr/actionBarSize"
             app:title="Transaction History"
             app:navigationIcon="@drawable/ic_arrow_back" />
-        <!-- Make sure you have ic_arrow_back.xml in res/drawable -->
-        <!-- You can create it: New > Vector Asset > Clip Art > search "arrow back" -->
     </com.google.android.material.appbar.AppBarLayout>
 
     <androidx.recyclerview.widget.RecyclerView
@@ -39,7 +37,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         tools:listitem="@layout/item_transaction" />
-    <!-- tools:listitem is for previewing your item_transaction layout in the editor -->
 
     <ProgressBar
         android:id="@+id/progressBarHistory"

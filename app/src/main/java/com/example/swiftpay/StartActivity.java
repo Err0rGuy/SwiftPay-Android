@@ -21,7 +21,7 @@ public class StartActivity extends AppCompatActivity {
     private ProgressBar progressSpinnerStart;
     private TextView tvLoadingMessage;
     private final Handler handler = new Handler();
-    private final int CHECK_INTERVAL = 1500;
+    private final int CHECK_INTERVAL = 500;
     private final int MAX_RETRIES = 6;
     private int retryCount = 0;
 
@@ -56,7 +56,7 @@ public class StartActivity extends AppCompatActivity {
                     navigateToLogin();
                 } else {
                     retryCount++;
-                    if (retryCount < MAX_RETRIES) {
+                    if (retryCount <= MAX_RETRIES) {
                         showErrorAndRetry("Server is down. Retrying (" + retryCount + "/" + MAX_RETRIES + ")...");
                         handler.postDelayed(this::checkInternetAndProceed, CHECK_INTERVAL);
                     } else {

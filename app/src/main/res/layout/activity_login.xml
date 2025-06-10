@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="?attr/colorSurface"
     android:fillViewport="true"
-    tools:context=".LoginActivity"> <!-- Make sure this matches your LoginActivity name -->
+    tools:context=".LoginActivity">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -23,8 +23,6 @@
             app:layout_constraintEnd_toEndOf="parent"
             android:layout_marginTop="48dp"
             android:contentDescription="App Logo" />
-        <!-- Replace @drawable/ic_launcher_foreground with your actual app logo -->
-        <!-- You might need to adjust size and margins based on your logo -->
 
         <TextView
             android:id="@+id/tvTitleLogin"
